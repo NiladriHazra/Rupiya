@@ -20,11 +20,13 @@ export const Users = () => {
         <div className="text-fuchsia-50 font-bold mt-6 text-lg">
             Users
         </div>
+        <br />
         <div className="my-2">
             <input onChange={(e) => {
                 setFilter(e.target.value)
             }} type="text" placeholder="Search users..." className="w-full px-2 py-1 border rounded bg-gray-700	"></input>
         </div>
+        <br />
         <div>
             {users.map(user => <User user={user} />)}
         </div>
@@ -48,7 +50,7 @@ function User({user}) {
             </div>
         </div>
 
-        <div className="flex flex-col justify-center h-ful">
+        <div className=" flex flex-col justify-center h-ful">
             <Button onClick={(e) => {
                 navigate("/send?id=" + user._id + "&name=" + user.firstName);
             }} label={"Send Money"} />

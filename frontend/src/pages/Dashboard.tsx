@@ -40,7 +40,9 @@ export const Dashboard = () => {
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message
+    return <div className="text-white text-4xl flex justify-center items-center h-screen">
+    {error}
+  </div> // Display error message
   }
 
   return (
@@ -53,3 +55,6 @@ export const Dashboard = () => {
     </div>
   );
 };
+
+
+
