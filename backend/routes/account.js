@@ -7,13 +7,18 @@ const { default: mongoose } = require('mongoose');
 const router = express.Router();
 
 router.get("/balance", authMiddleware, async (req, res) => {
-    const account = await Account.findOne({
-        userId: req.userId
-    });
-
-    res.json({
-        balance: account.balance
-    })
+    try {
+        const account = await Account.findOne({
+            userId: req.userId
+        });
+    
+        res.json({
+            balance: account.balance
+        })
+        
+    } catch (error) {
+        res.status(404).send(error);
+    }  
 });
 
 router.post("/transfer", authMiddleware, async (req, res) => {
