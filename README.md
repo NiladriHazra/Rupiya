@@ -1,2 +1,2 @@
-
-## Build a basic version of Rupiya
+# Rupiya
+- A full fledge transaction app
