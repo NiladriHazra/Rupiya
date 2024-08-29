@@ -1,143 +1,134 @@
+// backend/routes/user.js
 const express = require('express');
-const router = express.Router();
-const zod = require('zod');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
-const { User, Account } = require('../db');
-const { JWT_SECRET } = require('../config');
-const { authMiddleware } = require('../middleware');
 
-// Signup route
+const router = express.Router();
+const zod = require("zod");
+const { User, Account } = require("../db");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config");
+const  { authMiddleware } = require("../middleware");
+
 const signupBody = zod.object({
     username: zod.string().email(),
-    firstname: zod.string(),
-    lastname: zod.string(),
-    password: zod.string()
-});
+	firstName: zod.string(),
+	lastName: zod.string(),
+	password: zod.string()
+})
 
-router.post('/signup', async function(req, res) {
-    const { success } = signupBody.safeParse(req.body);
+router.post("/signup", async (req, res) => {
+    const { success } = signupBody.safeParse(req.body)
     if (!success) {
         return res.status(411).json({
-            message: "Invalid details"
-        });
+            message: "Email already taken / Incorrect inputs"
+        })
     }
 
     const existingUser = await User.findOne({
         username: req.body.username
-    });
+    })
 
     if (existingUser) {
         return res.status(411).json({
-            message: "User already exists"
-        });
+            message: "Email already taken/Incorrect inputs"
+        })
     }
-
-    // Hash the password before saving
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     const user = await User.create({
         username: req.body.username,
-        password: hashedPassword,
-        firstName: req.body.firstname,
-        lastName: req.body.lastname
-    });
-
+        password: req.body.password,
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+    })
     const userId = user._id;
 
     await Account.create({
-        userId: userId,
-        balance: 1 + Math.random() * 10000  // Random balance between 1 and 10000
-    });
+        userId,
+        balance: 1 + Math.random() * 10000
+    })
 
-    const token = jwt.sign({ userId }, JWT_SECRET);
+    const token = jwt.sign({
+        userId
+    }, JWT_SECRET);
 
-    res.status(200).json({
+    res.json({
         message: "User created successfully",
         token: token
-    });
-});
+    })
+})
 
-// Signin route
-const signInBody = zod.object({
+
+const signinBody = zod.object({
     username: zod.string().email(),
-    password: zod.string()
-});
+	password: zod.string()
+})
 
-router.post('/signin', async function(req, res) {
-    const { success } = signInBody.safeParse(req.body);
+router.post("/signin", async (req, res) => {
+    const { success } = signinBody.safeParse(req.body)
     if (!success) {
         return res.status(411).json({
-            message: "Invalid details"
-        });
+            message: "Email already taken / Incorrect inputs"
+        })
     }
 
     const user = await User.findOne({
-        username: req.body.username
+        username: req.body.username,
+        password: req.body.password
     });
 
-    if (user && await bcrypt.compare(req.body.password, user.password)) {
-        const token = jwt.sign({ userId: user._id }, JWT_SECRET);
+    if (user) {
+        const token = jwt.sign({
+            userId: user._id
+        }, JWT_SECRET);
+  
         res.json({
             token: token
-        });
-    } else {
-        res.status(411).json({
-            message: "Invalid username or password"
-        });
+        })
+        return;
     }
-});
 
-// Update user information route
+    
+    res.status(411).json({
+        message: "Error while logging in"
+    })
+})
+
 const updateBody = zod.object({
-    firstname: zod.string().optional(),
-    lastname: zod.string().optional(),
-    password: zod.string().optional()
-});
+	password: zod.string().optional(),
+    firstName: zod.string().optional(),
+    lastName: zod.string().optional(),
+})
 
-router.put("/", authMiddleware, async function(req, res) {
-    const { success } = updateBody.safeParse(req.body);
+router.put("/", authMiddleware, async (req, res) => {
+    const { success } = updateBody.safeParse(req.body)
     if (!success) {
-        return res.status(411).json({
-            message: "Invalid details"
-        });
+        res.status(411).json({
+            message: "Error while updating information"
+        })
     }
 
-    try {
-        const updateData = {};
-        if (req.body.firstname) updateData.firstName = req.body.firstname;
-        if (req.body.lastname) updateData.lastName = req.body.lastname;
-        if (req.body.password) {
-            // Hash new password if provided
-            updateData.password = await bcrypt.hash(req.body.password, 10);
-        }
+    await User.updateOne(req.body, {
+        id: req.userId
+    })
 
-        await User.updateOne(
-            { _id: req.userId },
-            { $set: updateData }
-        );
+    res.json({
+        message: "Updated successfully"
+    })
+})
 
-        res.json({
-            message: "Updated Successfully"
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: "Error updating user",
-            error: error.message
-        });
-    }
-});
-
-// Get users with filter route
-router.get("/bulk", async function(req, res) {
+router.get("/bulk", async (req, res) => {
     const filter = req.query.filter || "";
 
     const users = await User.find({
-        $or: [
-            { firstName: { "$regex": filter, "$options": "i" } },
-            { lastName: { "$regex": filter, "$options": "i" } }
-        ]
-    });
+        $or: [{
+            firstName: {
+                "$regex": filter
+            }
+        }, {
+            lastName: {
+                "$regex": filter
+            }
+        }]
+    })
 
     res.json({
         user: users.map(user => ({
@@ -146,7 +137,7 @@ router.get("/bulk", async function(req, res) {
             lastName: user.lastName,
             _id: user._id
         }))
-    });
-});
+    })
+})
 
 module.exports = router;

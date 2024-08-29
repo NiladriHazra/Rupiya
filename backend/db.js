@@ -1,15 +1,14 @@
+// backend/db.js
 const mongoose = require('mongoose');
 
-// Connect to MongoDB
-mongoose.connect("mongodb+srv://niladrihazra100xDevs:$Humi2003@cluster0.ydx27wq.mongodb.net/", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
+mongoose.connect("mongodb+srv://niladrihazra100xDevs:$Humi2003@cluster0.ydx27wq.mongodb.net/paytmNew").then(() => {
     console.log('MongoDB connected successfully');
 }).catch(err => {
     console.error('MongoDB connection error:', err);
 });
 
+
+// Create a Schema for Users
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -23,27 +22,27 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minLength: 8
+        minLength: 6
     },
     firstName: {
         type: String,
         required: true,
         trim: true,
-        lowercase: true
+        maxLength: 50
     },
     lastName: {
         type: String,
         required: true,
         trim: true,
-        lowercase: true
+        maxLength: 50
     }
 });
 
 const accountSchema = new mongoose.Schema({
-    userId: {  // Corrected field name from uerrId to userId
-        type: mongoose.Schema.Types.ObjectId,
+    userId: {
+        type: mongoose.Schema.Types.ObjectId, // Reference to User model
         ref: 'User',
-        required: true  // Adding required to ensure consistency
+        required: true
     },
     balance: {
         type: Number,
@@ -51,12 +50,10 @@ const accountSchema = new mongoose.Schema({
     }
 });
 
-// Create models for the schemas
-const User = mongoose.model('User', userSchema);
 const Account = mongoose.model('Account', accountSchema);
+const User = mongoose.model('User', userSchema);
 
-// Export models
 module.exports = {
-    User,
+	User,
     Account
 };
