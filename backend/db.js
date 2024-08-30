@@ -1,7 +1,8 @@
 // backend/db.js
 const mongoose = require('mongoose');
+require('dotenv').config()
 
-mongoose.connect("mongodb+srv://niladrihazra100xDevs:$Humi2003@cluster0.ydx27wq.mongodb.net/paytmNew").then(() => {
+mongoose.connect(process.env.MONGODB_URL).then(() => {
     console.log('MongoDB connected successfully');
 }).catch(err => {
     console.error('MongoDB connection error:', err);
