@@ -46,7 +46,7 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="bg-gray-800">
+    <div className="bg-gray-800 min-h-screen">
       <AppBar />
       <div className="m-8">
         <Balance value={balance} />

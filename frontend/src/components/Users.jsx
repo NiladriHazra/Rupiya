@@ -15,9 +15,11 @@ export const Users = () => {
       });
   }, [filter]);
 
+
+
   return (
     <div style={styles.container}>
-      <div style={styles.header}>Users</div>
+      <div style={styles.header}>Users  </div>
       <div style={styles.searchContainer}>
         <input
           onChange={(e) => setFilter(e.target.value)}
@@ -34,6 +36,8 @@ export const Users = () => {
     </div>
   );
 };
+
+
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
