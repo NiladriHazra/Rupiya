@@ -2,8 +2,3 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-html, body {
-    background-color: #1f2937; /* Tailwind CSS bg-gray-800 equivalent */
-    height: 100%;
-    margin: 0;
-  }
