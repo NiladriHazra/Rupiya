@@ -19,7 +19,7 @@ export const Signin = () => {
 
     const handleSignIn = async () => {
         try {
-          const response = await axios.post("https://rupiya-backend.onrender.com/signin", {
+          const response = await axios.post("https://rupiya-backend.onrender.com/api/v1/signin", {
             username,
             password
           });
