@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/v1", rootRouter);
+app.use("/", rootRouter);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
