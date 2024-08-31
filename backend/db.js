@@ -1,12 +1,20 @@
 // backend/db.js
+require('dotenv').config({path: '/home/humi/Documents/100x dev/paytm/paytm/backend/.env'});
 const mongoose = require('mongoose');
-require('dotenv').config()
 
-mongoose.connect(process.env.MONGODB_URL).then(() => {
-    console.log('MongoDB connected successfully');
-}).catch(err => {
-    console.error('MongoDB connection error:', err);
-});
+const mongoDBUrl = process.env.MONGODB_URL;
+console.log('MONGODB_URL:', mongoDBUrl);
+
+(async () => {
+    try {
+        await mongoose.connect(mongoDBUrl)
+        console.log('MongoDB connected successfully');
+    } catch (err) {
+        console.error('MongoDB connection error:', err);
+        process.exit(1); // Exit process with failure
+    }
+})();
+
 
 
 // Create a Schema for Users
