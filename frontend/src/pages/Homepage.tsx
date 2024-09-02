@@ -17,6 +17,10 @@ export const Homepage = function () {
         setDarkMode(!darkMode);
     };
 
+    const handleExternalLinkClick = () => {
+        window.location.href = "https://solana-rupiya.vercel.app/";
+    };
+
     return (
         <div className={`flex flex-col min-h-screen ${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-br from-green-400 to-blue-500'} overflow-hidden transition-colors duration-500`}>
             <nav className="bg-white shadow-md dark:bg-gray-800">
@@ -72,6 +76,33 @@ export const Homepage = function () {
             </header>
 
             <main className="flex-grow flex flex-col items-center justify-center px-4">
+                <div 
+                    onClick={handleExternalLinkClick} 
+                    className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white py-12 px-20 rounded-lg shadow-xl cursor-pointer transition-transform transform hover:scale-105 hover:shadow-2xl hover:bg-gradient-to-l"
+                    style={{
+                        maxWidth: '90vw',
+                        textAlign: 'center',
+                        marginBottom: '2rem',
+                        fontSize: '1.5rem',
+                        fontWeight: 'bold',
+                        position: 'relative',
+                        overflow: 'hidden',
+                    }}
+                >
+                    <div 
+                        className="absolute inset-0 bg-white opacity-10"
+                        style={{
+                            background: 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0) 70%)',
+                            transform: 'scale(1.5)',
+                            animation: 'pulse 6s infinite ease-in-out',
+                        }}
+                    />
+                    <h2 className="text-4xl font-extrabold mb-4">🚀 Visit Our Solana Rupiya</h2>
+                    <p className="text-lg">
+                        Click here 👉 to explore our Solana-based Web 3 platform and experience seamless money transfers.
+                    </p>
+                </div>
+
                 <div className="text-center mb-12">
                     <img
                         src="https://img.freepik.com/premium-vector/set-ui-ux-gui-screens-online-payment-app-template-mobile-apps-responsive-website-wireframes-web-design-ui-kit-online-shopping-onboarding-screens-vector-3d-illustration_145666-1501.jpg"
@@ -83,6 +114,7 @@ export const Homepage = function () {
                         }}
                     />
                 </div>
+
                 <div className="text-center mt-12">
                     <h2 className="text-2xl font-semibold mb-4">
                         Why Choose Rupiya?
@@ -103,7 +135,7 @@ export const Homepage = function () {
                          onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
                          onMouseLeave={e => e.currentTarget.style.transform = 'scale(1.05)'}
                     >
-                        <h3 className="text-xl font-semibold mb-2">
+                        <h3 className="text-xl font-semibold mb-2 ">
                             Fast Transfers
                         </h3>
                         <p className="text-lg">Send money instantly with our fast transfer service. No delays, just quick transactions.</p>
@@ -167,7 +199,7 @@ export const Homepage = function () {
                         onClick={handleSignup} 
                         className="px-6 py-3 bg-white text-blue-500 font-semibold rounded-full shadow-lg hover:bg-gray-100 transition-transform transform hover:scale-110"
                     >
-                        Sign Up
+                        Get Started
                     </button>
                     <button 
                         onClick={handleSignin} 
@@ -177,30 +209,6 @@ export const Homepage = function () {
                     </button>
                 </div>
             </main>
-
-            <footer className="bg-white dark:bg-gray-800 text-center py-4 mt-10">
-                <p className="text-gray-600 dark:text-gray-200">
-                    &copy; 2024 Rupiya. All rights reserved.
-                </p>
-            </footer>
         </div>
     );
 };
-
-// Add the following CSS to your styles or in a <style> tag
-
-const styles = `
-@keyframes zoomIn {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-    100% { transform: scale(1); }
-}
-
-@keyframes fadeInUp {
-    0% { opacity: 0; transform: translateY(20px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-`;
-
-// Apply these styles in your CSS file or in a <style> tag within your component.
-``
