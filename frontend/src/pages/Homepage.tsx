@@ -18,7 +18,7 @@ export const Homepage = function () {
     };
 
     const handleExternalLinkClick = () => {
-        window.location.href = "https://solana-rupiya.vercel.app/";
+        window.location.href = "rupiyasol.niladrihazra.site";
     };
 
     return (
