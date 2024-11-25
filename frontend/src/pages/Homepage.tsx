@@ -18,7 +18,7 @@ export const Homepage = function () {
     };
 
     const handleExternalLinkClick = () => {
-        window.location.href = "rupiyasol.niladrihazra.site";
+        window.location.href = "https://rupiyasol.niladrihazra.site/";
     };
 
     return (
